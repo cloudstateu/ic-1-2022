@@ -569,8 +569,6 @@ spec:
     app: api
 ```
 
-```
-
 Komendy:
 
 ```yaml
@@ -601,9 +599,6 @@ Chcąc, żeby aplikacja była dostępna poza klastrem dla użytkowników końcow
 1. Gdybyś po ustawieniu zmiennych środowiskowych nie widział poprawnych odpowiedzi z API w aplikacji frontend. Wywołaj stronę w prywatnym oknie przeglądarki lub w spróbuj usunąć wszystkie Pod za pomocą `kubectl delete pod --all` (w efekcie Kubernetes powinien stworzyć nowe Pody).
 
 ### Odpowiedzi
-
-
-Komendy:
 
 ```bash
 kubectl edit svc/frontend
