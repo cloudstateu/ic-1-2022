@@ -5,6 +5,8 @@ services:
       context: ./packages/frontend
     ports:
     - "8080:80"
+    environment:
+    - "API_URL=http://localhost:8888"
   api:
     build:
       context: ./packages/api

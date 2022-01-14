@@ -2,10 +2,10 @@ FROM node:slim
 
 WORKDIR /home/app
 
-COPY package*.json .
+COPY package*.json ./
 RUN npm ci --slient
 
-COPY . .
+COPY ./ ./
 
 EXPOSE 8888
 CMD npm start

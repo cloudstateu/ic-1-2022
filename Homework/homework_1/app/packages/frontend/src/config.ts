@@ -1,3 +1,3 @@
 export default {
-    BACKEND_URL: "http://localhost:8888"
+    BACKEND_URL: (<any>window)._env_.API_URL
 };
