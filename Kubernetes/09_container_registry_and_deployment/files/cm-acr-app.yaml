@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-acr-app
+spec:
+  selector:
+    matchLabels:
+      app: cm-acr-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: cm-acr-app
+    spec:
+      containers:
+      - name: app
+        image: <ACR_name>.azurecr.io/cm-acr-app
+        ports:
+        - containerPort: 8081
+      imagePullSecrets:
+      - name: dockerregistrycredential
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cm-acr-app
+  labels:
+    app: cm-acr-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8081
+    protocol: TCP
+  selector:
+    app: cm-acr-app
