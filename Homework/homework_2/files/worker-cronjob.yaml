@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: worker
+spec:
+  jobTemplate:
+    metadata:
+      name: worker
+    spec:
+      template:
+        spec:
+          containers:
+          - image: macborowy/chmurobank-exchangerates-downloader
+            name: worker
+            resources: {}
+            envFrom:
+              - configMapRef:
+                  name: cm-azure-database-connection-details
+          restartPolicy: OnFailure
+  schedule: "0 5 * * *"

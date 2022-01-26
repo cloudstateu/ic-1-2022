@@ -1,0 +1,56 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: azure-kvname
+spec:
+  provider: azure
+  secretObjects:
+  - secretName: db-secrets
+    type: Opaque
+    data:
+    - objectName: SECRET_PGHOST
+      key: PGHOST
+    - objectName: SECRET_PGUSER
+      key: PGUSER
+    - objectName: SECRET_PGPASSWORD
+      key: PGPASSWORD
+    - objectName: SECRET_PGDATABASE
+      key: PGDATABASE
+    - objectName: SECRET_PGPORT
+      key: PGPORT
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: "349ae04b-a2ca-4faf-b0d8-6506cb997511"
+    keyvaultName: "kvicst01dev"
+    cloudName: ""
+    cloudEnvFileName: ""
+    objects: |
+      array:
+        - |
+          objectName: PGHOST
+          objectAlias: SECRET_PGHOST
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: PGUSER
+          objectAlias: SECRET_PGUSER
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: PGPASSWORD
+          objectAlias: SECRET_PGPASSWORD
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: PGDATABASE
+          objectAlias: SECRET_PGDATABASE
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: PGPORT
+          objectAlias: SECRET_PGPORT
+          objectType: secret
+          objectVersion: ""
+    tenantId: "75a5633d-354d-43a2-9d21-1828521fd1e6"
+---
