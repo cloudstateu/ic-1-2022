@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: frontend
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: danchmpis/chm-k8s-namespace-frontend
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BACKEND_ENDPOINT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-cm
+                  key: BACKEND_ENDPOINT_URL

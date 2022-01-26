@@ -125,23 +125,25 @@ Wiedza w jaki sposób znaleźć strony pomocy dla interesujących nas komendy or
 1. Aby wyświetlić stronę pomocy użyj flagi `--help`
 1. Zmienne środowiskowe dla kontenera możesz podać podczas uruchamiania go za pomocą komendy `docker run`. Mimo to, nie jest to jedyny sposób podania zmiennych środowiskowych do kontenera.
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-```javascript
-docker --help
-docker build --help
-docker run --help
+  ```javascript
+  docker --help
+  docker build --help
+  docker run --help
 
-Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+  Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
-Run a command in a new container
+  Run a command in a new container
 
-Options:
-    ...
-    -e, --env list                   Set environment variables
-    --env-file list                  Read in a file of environment variables
-    ...
-```
+  Options:
+      ...
+      -e, --env list                   Set environment variables
+      --env-file list                  Read in a file of environment variables
+      ...
+  ```
+</details>
 
 ## Zbuduj i uruchom kontenery
 
@@ -175,19 +177,21 @@ Budowanie obrazów kontenera i uruchamianie ich jest chlebem powszednim pracy z 
 1. Chcąc aby kontenery nie zajmowały Twojej sesji terminala możesz uruchomić je w tle za pomocą `docker run -d`.
 1. Pamiętaj o odpowiedniej konfiguracji przekierowania portów za pomocą `docker run -p`. W przeciwnym razie nie otrzymasz odpowiedzi z aplikacji uruchomionej w kontenerze. Frontend działa na porcie 80, a API na porcie 8888.
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-```shell
-cd app/packages
-  
-cd frontend
-docker build -t app-frontend .
-docker run -d -p 80:80 app-frontend
+  ```shell
+  cd app/packages
 
-cd ../api
-docker build -t app-api .
-docker run -d -p 8888:8888 app-api
-```
+  cd frontend
+  docker build -t app-frontend .
+  docker run -d -p 80:80 app-frontend
+
+  cd ../api
+  docker build -t app-api .
+  docker run -d -p 8888:8888 app-api
+  ```
+</details>
 
 ## Zbuduj i uruchom kontenery w trybie "developerskim" (*)
 
@@ -206,19 +210,21 @@ Podczas codziennej pracy z kontenerami przydaje się możliwość obserwowania e
 1. Aby uruchomić kontener w trybie deweloperskim powinieneś zbudować kontener z innym plikem Dockerfile. U nas jest to `Dockerfile_dev`. Dodatkowo, powinieneś zamontować folder z kodem z Twojego lokalnego dysku jako volumen na kontenerze.
 1. ⚠️ **Uwaga**: jeśli na Twojej maszynie nie uruchomiłeś `npm install` to podczas podmontowywania lokalnego folderu z kodem musisz skonfigurować dodatkowy __anonymous volume__. Taki volumen spowoduje, że Docker podczas podmontowywania folderu z kodem pozostawił folder `/home/app/node_modules`, który stworzył podczas tworzenia kontenera. Aby stworzyć __anonymous volume__ zdefiniuj dodatkowy volumen uruchamiając `docker run`: `docker run -v /home/app/node_modules`. Jeśli nie zdefiniujesz __anonymous volume__ Docker nadpisze zawartość katalogu `/home/app` zawartością z lokalnego katalogu, który nie posiada `node_modules`. W efekcie program zwróci błąd z informacją o braku wymaganych zależności.
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-```shell
-cd app/packages
+  ```shell
+  cd app/packages
 
-cd frontend
-docker build -f Dockerfile_dev -t app-frontend:dev .
-docker run -d -p 80:80 -v "$(pwd)":/home/app -v /home/app/node_modules app-frontend:dev
+  cd frontend
+  docker build -f Dockerfile_dev -t app-frontend:dev .
+  docker run -d -p 80:80 -v "$(pwd)":/home/app -v /home/app/node_modules app-frontend:dev
 
-cd ../api
-docker build -f Dockerfile_dev -t app-api:dev .
-docker run -d -p 8888:8888 -v "$(pwd)":/home/app -v /home/app/node_modules app-api:dev
-```
+  cd ../api
+  docker build -f Dockerfile_dev -t app-api:dev .
+  docker run -d -p 8888:8888 -v "$(pwd)":/home/app -v /home/app/node_modules app-api:dev
+  ```
+</details>
 
 ## Skomunikuj kontenery ze sobą
 
@@ -240,16 +246,18 @@ W tym ćwiczeniu spróbujesz skomunikować kontenery ze sobą aby aplikacja Fron
 
 1. W jednym z zadań tej pracy domowej dowiedziałeś się jak uruchomić kontener podając do niego zmienną środowiskową. Wykorzystaj poznany mechanizm w tym zadaniu.
 
-### Odpowiedzi
-
-```shell
-docker run -d -p 80:80 -e API_URL=http://<VM-IP>:8888 app-frontend
-docker run -d -p 8888:8888 app-api
-```
-
 ### Dodatkowe informacje
 
 1. W aplikacji React wykorzystujemy mechanizm odczytywania zmiennych środowiskowych opisany w artykule: https://www.freecodecamp.org/news/how-to-implement-runtime-environment-variables-with-create-react-app-docker-and-nginx-7f9d42a91d70/
+
+<details>
+  <summary><b>Odpowiedzi</b></summary>
+
+  ```shell
+  docker run -d -p 80:80 -e API_URL=http://<VM-IP>:8888 app-frontend
+  docker run -d -p 8888:8888 app-api
+  ```
+</details>
 
 ## Uruchom kontenery za pomocą Docker Compose (*)
 
@@ -264,20 +272,22 @@ docker run -d -p 8888:8888 app-api
 1. Uruchom kontenery za pomocą komendy `docker-compose up`
 1. W repozytorium znajduje się plik `docker-compose.dev.yaml`. Pozwala on uruchomić kontenery w trybie developerskim. Możesz uruchomić kontenery w trybie developerskim używając komendy: `docker-compose -f docker-compose.dev.yaml up --build`. `--build` buduje obrazy kontenera przed uruchomieniem. Opcja przydaje się, gdy zmieniamy plik `docker-compose.yaml` na `docker-compose.dev.yaml` (i vice versa). Dzięki użyciu `--build`  możemy być pewni, że uruchamiamy kontenery zbudowane z poprawnych Dockerfile.
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-```shell
-cd app
+  ```shell
+  cd app
 
-docker-compose up
-docker-compose -f docker-compose.dev.yaml up --build
-```
+  docker-compose up
+  docker-compose -f docker-compose.dev.yaml up --build
+  ```
+</details>
 
 ## Udostępnij kontenery w Docker Hub
 
 ### Po co?
 
-Chcąc uruchomić skonteneryzowaną aplikację na klastrze musimy udostępnić obraz kontenera z aplikacją w repozytorium obrazów. W tym ćwiczeniu skorzystamy z Docker Hub, ponieważ jest to na razie jedyne repozytorium obrazów kontenerów jakie poznaliśmy na przesttzeni szkolenia.
+Chcąc uruchomić skonteneryzowaną aplikację na klastrze musimy udostępnić obraz kontenera z aplikacją w repozytorium obrazów. W tym ćwiczeniu skorzystamy z Docker Hub, ponieważ jest to na razie jedyne repozytorium obrazów kontenerów jakie poznaliśmy na przestrzeni szkolenia.
 
 ### Kroki
 
@@ -294,17 +304,20 @@ Chcąc uruchomić skonteneryzowaną aplikację na klastrze musimy udostępnić o
 
 1. Udostępnij obrazy w Docker Hub za pomocą komendy `docker push`
 
-### Odpowiedzi
 
-```shell
-docker login
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-docker tag app-frontend <dockerID>/chmurobank-frontend
-docker tag app-api <dockerID>/chmurobank-api
+  ```shell
+  docker login
 
-docker push <dockerID>/chmurobank-frontend
-docker push <dockerID>/chmurobank-frontend
-```
+  docker tag app-frontend <dockerID>/chmurobank-frontend
+  docker tag app-api <dockerID>/chmurobank-api
+
+  docker push <dockerID>/chmurobank-frontend
+  docker push <dockerID>/chmurobank-frontend
+  ```
+</details>
 
 ## Utwórz klaster AKS
 
@@ -329,15 +342,17 @@ Klaster Kubernetes jest niezbędny do wykonania kolejnych ćwiczeń 😁
 
 1. Sprawdź czy Node (maszyny wirtualnej) są w statusie `Ready`
 
-### Odpowiedzi
-
-```
-kubectl get nodes
-```
-
 ### Dodatkowe informacje
 
 Jeśli chcesz używać `az` z poziomu swojego terminala musisz go doinstalować. Instrukcje instalacji dla swojego systemu operacyjnego znajdziesz w dokumentacji: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+
+<details>
+  <summary><b>Odpowiedzi</b></summary>
+
+  ```
+  kubectl get nodes
+  ```
+</details>
 
 ## Uruchom aplikacje frontend i API na klastrze
 
@@ -379,65 +394,67 @@ spec:
 1. Pamiętaj, że referując do obrazu kontenera w Docker Hub powinieneś użyć formatu `<username>/<image-name>[:<tag>]`)
 1. W razie problemów z uruchomieniem aplikacji sprawdź informacje prezentowane przez `docker describe pod <pod-name>` oraz `docker logs <pod-name>`
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-Uzupełniony obiekt Deployment dla aplikacji Frontend:
+  Uzupełniony obiekt Deployment dla aplikacji Frontend:
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: frontend
-  name: frontend
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
       app: frontend
-  template:
-    metadata:
-      labels:
+    name: frontend
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
         app: frontend
-    spec:
-      containers:
-      - image: macborowy/chmurobank-front
-        name: app
-        ports:
-        - containerPort: 80
-```
+    template:
+      metadata:
+        labels:
+          app: frontend
+      spec:
+        containers:
+        - image: macborowy/chmurobank-front
+          name: app
+          ports:
+          - containerPort: 80
+  ```
 
-Uzupełniony obiekt Deployment dla aplikacji API:
+  Uzupełniony obiekt Deployment dla aplikacji API:
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: api
-  name: api
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
       app: api
-  template:
-    metadata:
-      labels:
+    name: api
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
         app: api
-    spec:
-      containers:
-      - image: macborowy/chmurobank-api
-        name: app
-        ports:
-        - containerPort: 8888
-```
+    template:
+      metadata:
+        labels:
+          app: api
+      spec:
+        containers:
+        - image: macborowy/chmurobank-api
+          name: app
+          ports:
+          - containerPort: 8888
+  ```
 
-Komendy:
+  Komendy:
 
-```bash
-kubectl apply -f frontend.yaml -f api.yaml
-```
+  ```bash
+  kubectl apply -f frontend.yaml -f api.yaml
+  ```
+</details>
 
 ## Utwórz kontener debug, którym sprawdzisz komunikację z Pod
 
@@ -470,19 +487,21 @@ W tym ćwiczeniu stworzymy tymczasowy Pod o nazwie debug. Będzie on używany ty
 
 1. Sesję bash możesz zakończyć komendą `exit`.
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-```shell
-kubectl get pods -o wide
+  ```shell
+  kubectl get pods -o wide
 
-kubectl run debug --image=node --rm -it -- bash
+  kubectl run debug --image=node --rm -it -- bash
 
-# run following commands inside debug container
-curl http://10.0.0.1
-curl http://10.0.0.1:8888/info
+  # run following commands inside debug container
+  curl http://10.0.0.1
+  curl http://10.0.0.1:8888/info
 
-exit
-```
+  exit
+  ```
+</details>
 
 ## Utwórz Service aby komunikować się z Pod posługując się znaną nazwą DNS
 
@@ -529,51 +548,53 @@ Każdy Pod na klastrze posiada swój unikalny adres IP. Komunikacja z Pod za pom
     {"status":"ok","timestamp":"2022-01-08T10:13:46.986Z","hostname":"api-66fd55f5c-z5ck5","data":null}
     ```
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-Uzupełniony obiekt Service dla aplikacji Frontend:
+  Uzupełniony obiekt Service dla aplikacji Frontend:
 
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: frontend
-  name: frontend
-spec:
-  type: ClusterIP
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: frontend
-```
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: frontend
+    name: frontend
+  spec:
+    type: ClusterIP
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: frontend
+  ```
 
-Uzupełniony obiekt Service dla aplikacji API:
+  Uzupełniony obiekt Service dla aplikacji API:
 
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: api
-  name: api
-spec:
-  type: ClusterIP
-  ports:
-  - port: 8888
-    protocol: TCP
-    targetPort: 8888
-  selector:
-    app: api
-```
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: api
+    name: api
+  spec:
+    type: ClusterIP
+    ports:
+    - port: 8888
+      protocol: TCP
+      targetPort: 8888
+    selector:
+      app: api
+  ```
 
-Komendy:
+  Komendy:
 
-```yaml
-kubectl apply -f frontend-svc.yaml -f api-svc.yaml
-```
+  ```yaml
+  kubectl apply -f frontend-svc.yaml -f api-svc.yaml
+  ```
+</details>
 
 ## Udostępnij aplikacje poza klaster
 
@@ -598,48 +619,50 @@ Chcąc, żeby aplikacja była dostępna poza klastrem dla użytkowników końcow
 1. Service udostępnione są do sieci Internet przez HTTP. Upewni się, że wykonując requesty nie wykonujesz ich korzystając z HTTPS.
 1. Gdybyś po ustawieniu zmiennych środowiskowych nie widział poprawnych odpowiedzi z API w aplikacji frontend. Wywołaj stronę w prywatnym oknie przeglądarki lub w spróbuj usunąć wszystkie Pod za pomocą `kubectl delete pod --all` (w efekcie Kubernetes powinien stworzyć nowe Pody).
 
-### Odpowiedzi
+<details>
+  <summary><b>Odpowiedzi</b></summary>
 
-```bash
-kubectl edit svc/frontend
+  ```bash
+  kubectl edit svc/frontend
 
-kubectl edit svc/api
+  kubectl edit svc/api
 
-kubectl get svc
-```
+  kubectl get svc
+  ```
 
-Obiekt Deployment dla aplikacji Frontend uzupełniony o zmienne środowiskowe
+  Obiekt Deployment dla aplikacji Frontend uzupełniony o zmienne środowiskowe
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: frontend
-  name: frontend
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
       app: frontend
-  template:
-    metadata:
-      labels:
+    name: frontend
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
         app: frontend
-    spec:
-      containers:
-      - image: macborowy/chmurobank-front
-        name: app
-        ports:
-        - containerPort: 80
-        env:
-        - name: API_URL
-          value: "http://<API-SERVICE-PUBLIC-URL>:8888"
-```
+    template:
+      metadata:
+        labels:
+          app: frontend
+      spec:
+        containers:
+        - image: macborowy/chmurobank-front
+          name: app
+          ports:
+          - containerPort: 80
+          env:
+          - name: API_URL
+            value: "http://<API-SERVICE-PUBLIC-URL>:8888"
+  ```
 
-```bash
-kubectl apply -f deployment.yaml
-```
+  ```bash
+  kubectl apply -f deployment.yaml
+  ```
+</details>
 
 ---
 

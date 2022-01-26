@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-map-1
+  namespace: default
+data:
+  workshop.properties: |
+    name_lab=configMap
+    students=15
+    students.english=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-map-2
+  namespace: default
+data:
+  frontend.properties: |
+    background-color=blue
+    font-weight=bold
+    dark-mode=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-map-3
+  namespace: default
+data:
+  test_frontend_url: http://frontend.test
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config-map-4
+  namespace: default
+data:
+  log_level: INFO
