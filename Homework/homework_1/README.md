@@ -315,7 +315,7 @@ Chcąc uruchomić skonteneryzowaną aplikację na klastrze musimy udostępnić o
   docker tag app-api <dockerID>/chmurobank-api
 
   docker push <dockerID>/chmurobank-frontend
-  docker push <dockerID>/chmurobank-frontend
+  docker push <dockerID>/chmurobank-api
   ```
 </details>
 
